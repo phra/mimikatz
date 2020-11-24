@@ -1,0 +1,28 @@
+trigger:
+- build
+
+pool:
+    vmImage: 'windows-latest'
+
+steps:
+# MSBuild
+# Build with MSBuild
+- task: MSBuild@1
+  inputs:
+    solution: '**/*.sln' 
+    #msbuildLocationMethod: 'version' # Optional. Options: version, location
+    #msbuildVersion: 'latest' # Optional. Options: latest, 16.0, 15.0, 14.0, 12.0, 4.0
+    msbuildArchitecture: 'x64' # Optional. Options: x86, x64
+    #msbuildLocation: # Optional
+    platform: 'x64' # Optional
+    configuration: 'release' # Optional
+    msbuildArguments: '-target:mimikatz' # Optional
+    #clean: false # Optional
+    #maximumCpuCount: false # Optional
+    #restoreNugetPackages: false # Optional
+    #logProjectEvents: false # Optional
+    #createLogFile: false # Optional
+    #logFileVerbosity: 'normal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic
+  
+- publish: $(System.DefaultWorkingDirectory)/x64/Mimikatz.exe
+  artifact: Mimikatz64
